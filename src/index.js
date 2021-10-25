@@ -13,27 +13,45 @@ const PIX_KEY_PHONE = "phone"
  *  
  */
 export function validate(pixKey) {
+	const keyTypes = []
 	pixKey = pixKey.trim()
 
 	if (validateBr.cpf(pixKey)) {
-		return PIX_KEY_CPF
-	} else if (validateBr.cnpj(pixKey)) {
-		return PIX_KEY_CNPJ
-	} else if (uuidValidator(pixKey)) {
-		return PIX_KEY_RANDOM
-	} else if (isValidPhoneNumber(pixKey, 'BR')) {
-		return PIX_KEY_PHONE
-	} else if (emailValidator(pixKey)) {
-		return PIX_KEY_EMAIL
-	} else {
-		return false
+		keyTypes.push(PIX_KEY_CPF)
 	}
+	if (validateBr.cnpj(pixKey)) {
+		keyTypes.push(PIX_KEY_CNPJ)
+	}
+	if (uuidValidator(pixKey)) {
+		keyTypes.push(PIX_KEY_RANDOM)
+	}
+	if (isValidPhoneNumber(pixKey, 'BR')) {
+		keyTypes.push(PIX_KEY_PHONE)
+	}
+	if (emailValidator(pixKey)) {
+		keyTypes.push(PIX_KEY_EMAIL)
+	}
+
+	return keyTypes
 }
 
-export function normalize(pixKey) {
+export function normalize(pixKey, as = null) {
 	pixKey = pixKey.trim()
 
-	switch (validate(pixKey)) {
+	let useAs = validate(pixKey)
+	if (useAs.length > 1) {
+		if (useAs.includes(as)) {
+			useAs = as
+		} else {
+			return null
+		}
+	} else if (!useAs.length) {
+		return null
+	} else {
+		useAs = useAs[0]
+	}
+
+	switch (useAs) {
 		case PIX_KEY_CPF:
 		case PIX_KEY_CNPJ:
 			return pixKey.replace(/[^0-9]/g, '')
@@ -47,10 +65,23 @@ export function normalize(pixKey) {
 	}
 }
 
-export function format(pixKey) {
-	pixKey = normalize(pixKey)
+export function format(pixKey, as = null) {
+	pixKey = normalize(pixKey, as)
 
-	switch (validate(pixKey)) {
+	let useAs = validate(pixKey)
+	if (useAs.length > 1) {
+		if (useAs.includes(as)) {
+			useAs = as
+		} else {
+			return null
+		}
+	} else if (!useAs.length) {
+		return null
+	} else {
+		useAs = useAs[0]
+	}
+
+	switch (useAs) {
 		case PIX_KEY_CPF:
 			return maskBr.cpf(pixKey)
 
@@ -62,7 +93,8 @@ export function format(pixKey) {
 			return pixKey
 
 		case PIX_KEY_PHONE:
-			return parsePhoneNumber(pixKey, 'BR').formatNational()
+			const phoneNumber = parsePhoneNumber(pixKey, 'BR')
+			return phoneNumber.country === 'BR' ? phoneNumber.formatNational() : phoneNumber.formatInternational()
 	}
 }
 

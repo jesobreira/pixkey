@@ -1,6 +1,6 @@
 {
   "name": "pixkey",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Identify, validate, format and normalize a Pix key type from a string",
   "main": "lib/index.js",
   "scripts": {
@@ -31,7 +31,7 @@
   "dependencies": {
     "email-validator": "^2.0.4",
     "js-brasil": "^2.4.6",
-    "libphonenumber-js": "^1.9.18",
+    "libphonenumber-js": "^1.9.38",
     "uuid-validate": "0.0.3"
   },
   "devDependencies": {
