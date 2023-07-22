@@ -70,11 +70,15 @@ export function format(pixKey, as = null) {
 
 	let useAs = validate(pixKey)
 	if (useAs.length > 1) {
+		if(as) {
 		if (useAs.includes(as)) {
 			useAs = as
 		} else {
 			return null
 		}
+	}else {
+		useAs = useAs[0]
+	}
 	} else if (!useAs.length) {
 		return null
 	} else {
@@ -98,4 +102,4 @@ export function format(pixKey, as = null) {
 	}
 }
 
-export { PIX_KEY_CPF, PIX_KEY_CNPJ, PIX_KEY_RANDOM, PIX_KEY_EMAIL, PIX_KEY_PHONE }
+export { PIX_KEY_CNPJ, PIX_KEY_CPF, PIX_KEY_EMAIL, PIX_KEY_PHONE, PIX_KEY_RANDOM }
