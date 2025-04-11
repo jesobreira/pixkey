@@ -1,11 +1,12 @@
 {
   "name": "pixkey",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Identify, validate, format and normalize a Pix key type from a string",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
-    "build": "babel src -d lib"
+    "test": "mocha",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -35,9 +36,11 @@
     "uuid-validate": "0.0.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.3",
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.2",
-    "mocha": "^8.4.0"
+    "@types/email-validator": "^1.0.3",
+    "@types/node": "^20.10.3",
+    "@types/uuid-validate": "^0.0.2",
+    "mocha": "^8.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }
